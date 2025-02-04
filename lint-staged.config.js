@@ -1,4 +1,0 @@
-module.exports = {
-  "**/*.{js,ts,jsx,tsx}": "eslint --fix",
-  "**/*.{css,scss}": "stylelint --fix",
-};
