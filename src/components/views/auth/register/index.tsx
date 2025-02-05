@@ -55,7 +55,7 @@ const RegisterView = () => {
 
     if (result.status === 200) {
       setIsLoading(false);
-      push("/login");
+      push("../auth/login");
     } else {
       setIsLoading(false);
       setError("Email already exists");
