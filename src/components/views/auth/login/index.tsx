@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { query } from "firebase/firestore";
 import { signIn } from "next-auth/react";
 
 export default function LoginView() {
@@ -29,7 +28,8 @@ export default function LoginView() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const callbackUrl: any = query.callbackUrl || "/";
+  const callbackUrl: string =
+    typeof query.callbackUrl === "string" ? query.callbackUrl : "/";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ export default function LoginView() {
         setIsLoading(false);
         setError("Email or password is incorrect");
       }
-    } catch (err) {
+    } catch (_err) {
       setIsLoading(false);
       setError("Email or password is incorrect");
     }
