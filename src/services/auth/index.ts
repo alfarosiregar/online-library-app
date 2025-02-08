@@ -3,6 +3,8 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import bcrypt from "bcrypt";
 import app from "@/lib/firebase/init";
 
+const firestore = getFirestore(app);
+
 export async function signUp(
   userData: {
     email: string;
@@ -53,7 +55,7 @@ export async function loginWithGoogle(
   } else {
     await addData("users", data, (status: boolean) => {
       if (status) {
-        callback(data);
+        callback(userData);
       }
     });
   }
