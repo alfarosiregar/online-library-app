@@ -19,6 +19,8 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 export default function LoginView() {
   const { push, query } = useRouter();
@@ -103,6 +105,13 @@ export default function LoginView() {
             {isLoading ? "Loading..." : "Login"}
           </Button>
         </form>
+        <Button
+          type="button"
+          className="w-full bg-white hover:bg-gray-100 text-black"
+          onClick={() => signIn("google", { callbackUrl, redirect: false })}
+        >
+          <FontAwesomeIcon icon={faGoogle} /> Login with Google
+        </Button>
         {error && (
           <CardDescription className="text-center text-red-500 font-semibold mb-2">
             {error}

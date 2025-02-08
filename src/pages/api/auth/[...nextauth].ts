@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { signIn } from "@/lib/firebase/service";
+import GoogleProvider from "next-auth/providers/google";
+import { loginWithGoogle, signIn } from "@/services/auth";
 import { compare } from "bcrypt";
 
 const authOptions: NextAuthOptions = {
@@ -35,6 +36,17 @@ const authOptions: NextAuthOptions = {
         return user;
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET || "",
+      authorization: {
+        params: {
+          prompt: "select_account",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, account, profile, user }: any) {
@@ -44,17 +56,41 @@ const authOptions: NextAuthOptions = {
         token.phone = user.phone;
         token.role = user.role;
       }
+
+      if (account?.provider === "google") {
+        const data = {
+          email: user.email,
+          fullname: user.name,
+          phone: "",
+          type: "google",
+          role: "member",
+        };
+
+        await loginWithGoogle(data, (data: any) => {
+          token.email = data.email;
+          token.fullname = data.fullname;
+          token.phone = data.phone;
+          token.type = data.type;
+          token.role = data.role;
+        });
+      }
       return token;
     },
     async session({ session, token }: any) {
       if ("email" in token) {
         session.user.email = token.email;
       }
-      if ("fullname" in token) {
-        session.user.fullname = token.fullname;
+      if ("fullname" in token || "name" in token) {
+        session.user.fullname = token.fullname || token.name;
       }
       if ("phone" in token) {
         session.user.phone = token.phone;
+      }
+      if ("role" in token) {
+        session.user.role = token.role;
+      }
+      if ("type" in token) {
+        session.user.type = token.type;
       }
       return session;
     },

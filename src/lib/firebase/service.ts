@@ -8,10 +8,24 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import bcrypt from "bcrypt";
 import app from "./init";
 
 const firestore = getFirestore(app);
+
+export async function addData(
+  collectionName: string,
+  data: any,
+  callback: Function,
+) {
+  await addDoc(collection(firestore, collectionName), data)
+    .then(() => {
+      callback(true);
+    })
+    .catch((err) => {
+      callback(false);
+      console.log(err);
+    });
+}
 
 export async function retrieveData(collectionName: string) {
   const snapshot = await getDocs(collection(firestore, collectionName));
@@ -28,20 +42,14 @@ export async function retrieveDataById(collectionName: string, id: string) {
   return data;
 }
 
-export async function signUp(
-  userData: {
-    email: string;
-    fullname: string;
-    phone: number;
-    role?: string;
-    password: string;
-  },
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  callback: Function,
+export async function retrieveDataByField(
+  collectionName: string,
+  field: string,
+  value: string,
 ) {
   const q = query(
-    collection(firestore, "users"),
-    where("email", "==", userData.email),
+    collection(firestore, collectionName),
+    where(field, "==", value),
   );
   const snapshot = await getDocs(q);
   const data = snapshot.docs.map((doc) => ({
@@ -49,36 +57,17 @@ export async function signUp(
     ...doc.data(),
   }));
 
-  if (data.length > 0) {
-    callback(false);
-  } else {
-    if (!userData.role) {
-      userData.role = "member";
-    }
-    userData.password = await bcrypt.hash(userData.password, 10);
-    await addDoc(collection(firestore, "users"), userData)
-      .then(() => {
-        callback(true);
-      })
-      .catch((err) => {
-        callback(false);
-        console.log(err);
-      });
-  }
+  return data;
 }
 
-export async function signIn(email: string) {
-  const q = query(collection(firestore, "users"), where("email", "==", email));
+export async function getData(collectionName: string) {
+  const queryProducts = await getDocs(collection(firestore, collectionName));
+  const data = queryProducts.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  return data;
+}
 
-  const snapshot = await getDocs(q);
-  const data = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-
-  if (data) {
-    return data[0];
-  } else {
-    return null;
-  }
+export async function getDataById(collectionName: string, id: string) {
+  const queryProduct = await getDoc(doc(firestore, collectionName, id));
+  const data = queryProduct.data();
+  return data;
 }
