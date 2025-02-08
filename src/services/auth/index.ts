@@ -51,11 +51,11 @@ export async function loginWithGoogle(
   const data = await retrieveDataByField("users", "email", userData.email);
 
   if (data.length > 0) {
-    return data[0];
+    return data[0]; // User sudah ada, langsung return data pertama
   } else {
-    await addData("users", data, (status: boolean) => {
+    await addData("users", userData, (status: boolean) => {
       if (status) {
-        callback(userData);
+        callback(userData); // Menggunakan userData yang baru ditambahkan
       }
     });
   }
