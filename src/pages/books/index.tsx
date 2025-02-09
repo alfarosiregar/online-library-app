@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import BookView from "@/components/views/bookList";
+import BookView from "@/components/views/books";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { fetcher } from "@/lib/swr/fetcher";

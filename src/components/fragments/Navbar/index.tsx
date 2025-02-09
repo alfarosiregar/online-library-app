@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CircleUser, LogIn, Menu, Package2, Search } from "lucide-react";
+import { CircleUser, Menu, Package2, Search } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   DropdownMenu,

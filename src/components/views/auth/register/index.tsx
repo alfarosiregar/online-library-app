@@ -19,6 +19,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import Link from "next/link";
+import authService from "@/services/auth";
 
 const RegisterView = () => {
   const { push } = useRouter();
@@ -45,13 +46,8 @@ const RegisterView = () => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    const result = await fetch("/api/user/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+
+    const result = await authService.registerAccount(formData);
 
     if (result.status === 200) {
       setIsLoading(false);

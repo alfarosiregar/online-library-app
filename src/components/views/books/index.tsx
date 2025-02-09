@@ -1,5 +1,5 @@
-import BookCard from "@/components/fragments/BookCard";
-import SkeletonFragment from "@/components/fragments/skeleton";
+import BookCard from "@/components/fragments/Card";
+import SkeletonCard from "@/components/fragments/Skeleton";
 import { BookType } from "@/types/book.type";
 
 const BookView = ({ products }: { products: BookType[] }) => {
@@ -19,10 +19,10 @@ const BookView = ({ products }: { products: BookType[] }) => {
           ))
         ) : (
           <>
-            <SkeletonFragment />
-            <SkeletonFragment />
-            <SkeletonFragment />
-            <SkeletonFragment />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
           </>
         )}
       </div>

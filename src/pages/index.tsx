@@ -1,7 +1,6 @@
-import BookList from "@/components/BookList";
-import SearchBar from "@/components/SearchBar";
-import CategoryFilter from "@/components/CategoryFilter";
-import Navbar from "@/components/layouts/Navbar";
+import SearchBar from "@/components/fragments/SearchBar";
+import CategoryFilter from "@/components/fragments/CategoryFilter";
+import Navbar from "@/components/fragments/Navbar";
 
 export default function Home() {
   return (
@@ -13,7 +12,6 @@ export default function Home() {
           </aside>
           <div className="w-full md:w-3/4">
             <SearchBar />
-            <BookList />
           </div> */}
         </div>
       </main>

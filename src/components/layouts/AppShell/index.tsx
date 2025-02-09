@@ -1,9 +1,9 @@
-import Footer from "../Footer";
+import Footer from "../../fragments/Footer";
 import { useRouter } from "next/router";
 import { Roboto } from "next/font/google";
 import dynamic from "next/dynamic";
 
-const Navbar = dynamic(() => import("../Navbar"), { ssr: false });
+const Navbar = dynamic(() => import("../../fragments/Navbar"), { ssr: false });
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -15,13 +15,13 @@ const roboto = Roboto({
 });
 
 const AppShell = ({ children }: AppShellProps) => {
-  const disableNavbarAndFooter = ["/login", "/register"];
+  const disableNavbarAndFooter = ["auth", "admin"];
   const { pathname } = useRouter();
   return (
     <main className={roboto.className}>
-      {!disableNavbarAndFooter.includes(pathname) && <Navbar />}
+      {!disableNavbarAndFooter.includes(pathname.split("/")[1]) && <Navbar />}
       {children}
-      {!disableNavbarAndFooter.includes(pathname) && <Footer />}
+      {!disableNavbarAndFooter.includes(pathname.split("/")[1]) && <Footer />}
     </main>
   );
 };

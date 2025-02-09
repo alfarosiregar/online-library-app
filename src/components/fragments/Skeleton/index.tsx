@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-const SkeletonFragment = () => {
+const SkeletonCard = () => {
   return (
     <div className="flex justify-center items-center mt-10">
       <div className="flex flex-col space-y-3">
@@ -13,4 +13,4 @@ const SkeletonFragment = () => {
   );
 };
 
-export default SkeletonFragment;
+export default SkeletonCard;

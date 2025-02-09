@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Online Library . Hak Cipta Dilindungi.
+          © {new Date().getFullYear()} Online Library . Hak Cipta Dilindungi
         </div>
       </div>
     </footer>
