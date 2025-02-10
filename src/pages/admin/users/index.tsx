@@ -1,4 +1,3 @@
-import AdminLayout from "@/components/layouts/AdminLayout";
 import AdminUsersView from "@/components/views/admin/users";
 
 const AdminUsersPage = () => {

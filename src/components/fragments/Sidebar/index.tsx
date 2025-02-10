@@ -1,19 +1,16 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
   Users,
   Settings,
   Menu,
-  ChevronRight,
+  ChevronLeft,
   LayoutGrid,
   UserPen,
   SwatchBook,
   Home,
   LogOut,
 } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
@@ -30,45 +27,60 @@ const sidebarLinks = [
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
-const Sidebar = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+type SidebarProps = {
+  isExpanded: boolean;
+  setIsExpanded: (value: boolean) => void;
+};
+
+const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
   const { pathname } = useRouter();
+
   return (
     <motion.aside
       animate={{ width: isExpanded ? 250 : 80 }}
-      className="h-screen bg-gray-900 text-white p-4 flex flex-col"
+      transition={{ type: "spring", stiffness: 100 }}
+      className="fixed left-0 top-0 h-screen bg-gray-900 text-white p-4 flex flex-col z-50 shadow-lg"
     >
-      {/* Toggle Button */}
-      <motion.div className="flex justify-around items-center mb-4 gap-x-2">
+      {/* Header Sidebar + Tombol Toggle */}
+      <motion.div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           <Image
             src="/logo.png"
             alt="Logo"
             width={64}
             height={64}
-            className={cn("text-lg font-bold", !isExpanded && "hidden")}
+            className={cn(
+              "text-lg font-bold transition-all",
+              !isExpanded && "hidden",
+            )}
           />
-          <h5 className={cn("text-lg font-bold", !isExpanded && "hidden")}>
+          <h5
+            className={cn(
+              "text-lg font-bold transition-all",
+              !isExpanded && "hidden",
+            )}
+          >
             Library
           </h5>
         </div>
         <Button
-          variant="destructive"
+          variant="ghost"
           className="flex items-center gap-2 px-3 py-2 text-white hover:bg-gray-700 transition-all"
           onClick={() => setIsExpanded(!isExpanded)}
         >
           <motion.div
-            animate={{ rotate: isExpanded ? 0 : 369 }}
-            transition={{ duration: 0.5 }}
+            animate={{ rotate: isExpanded ? 0 : 180 }}
+            transition={{ duration: 0.4 }}
           >
             {isExpanded ? (
-              <Menu className="w-6 h-6" />
+              <ChevronLeft className="w-6 h-6" />
             ) : (
-              <ChevronRight className="w-6 h-6" />
+              <Menu className="w-6 h-6" />
             )}
           </motion.div>
         </Button>
       </motion.div>
+
       <Separator className="bg-gray-700" />
 
       {/* Navigation Links */}
@@ -84,11 +96,7 @@ const Sidebar = () => {
             )}
           >
             <Icon className="w-5 h-5" />
-            {isExpanded && (
-              <motion.span animate={{ opacity: isExpanded ? 1 : 0 }}>
-                {name}
-              </motion.span>
-            )}
+            {isExpanded && <motion.span>{name}</motion.span>}
           </Link>
         ))}
       </nav>
