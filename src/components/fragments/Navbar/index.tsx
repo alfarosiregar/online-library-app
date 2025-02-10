@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CircleUser, Menu, Package2, Search } from "lucide-react";
+import { CircleUser, Menu, BookOpenText, Search } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -30,54 +30,29 @@ const Navbar = () => {
           href={"/"}
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <Package2 className="h-6 w-6" />
-          <span className="sr-only">Acme Inc</span>
+          <BookOpenText className="h-9 w-9" />
         </Link>
-        <Link
-          href={"/dashboard"}
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Dashboard
-        </Link>
-        <Link
-          href={"/order"}
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          {data && data.user.role === "seller" ? "Orders" : "Cart"}
-        </Link>
-        {data && data.user.role === "seller" ? (
+        {data && data.user.role === "admin" && (
           <Link
-            href={"/seller"}
+            href={"/admin"}
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Seller
+            Admin
           </Link>
-        ) : (
-          ""
+        )}
+        {data && data.user.role === "member" && (
+          <Link
+            href={"/student"}
+            className="text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Student
+          </Link>
         )}
         <Link
-          href={"/bookList"}
+          href={"/books"}
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Book
-        </Link>
-        <Link
-          href={"/customers"}
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Customers
-        </Link>
-        <Link
-          href={"/profile"}
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Profile
-        </Link>
-        <Link
-          href={"/settings"}
-          className="text-foreground transition-colors hover:text-foreground"
-        >
-          Settings
         </Link>
       </nav>
       <Sheet>
@@ -96,35 +71,13 @@ const Navbar = () => {
               href="#"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <Package2 className="h-6 w-6" />
-              <span className="sr-only">Shopedia</span>
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Dashboard
+              <BookOpenText className="h-9 w-9" />
             </Link>
             <Link
               href="/bookList"
               className="text-muted-foreground hover:text-foreground"
             >
               Book
-            </Link>
-            <Link
-              href="/profile"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Profile
-            </Link>
-            <Link href="#" className="hover:text-foreground">
-              Customers
-            </Link>
-            <Link
-              href="/settings"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Settings
             </Link>
           </nav>
         </SheetContent>

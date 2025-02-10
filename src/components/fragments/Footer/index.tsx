@@ -8,8 +8,14 @@ export default function Footer() {
     <footer className="bg-background border-t mt-20">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-          <div className="flex items-center space-x-2">
-            <Image src="/favicon.ico" alt="Logo" width={32} height={32} />
+          <div className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={90}
+              height={90}
+              className="text-lg font-bold"
+            />
             <span id="logo" className="font-bold text-lg"></span>
             <Script id="title-script" strategy="lazyOnload">
               {`document.getElementById("logo").textContent = "Online Library";`}
@@ -52,9 +58,6 @@ export default function Footer() {
               <Twitter className="w-5 h-5" />
             </Link>
           </div>
-        </div>
-        <div className="mt-8 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Online Library . Hak Cipta Dilindungi
         </div>
       </div>
     </footer>

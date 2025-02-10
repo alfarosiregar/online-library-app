@@ -69,7 +69,6 @@ const Sidebar = () => {
           </motion.div>
         </Button>
       </motion.div>
-
       <Separator className="bg-gray-700" />
 
       {/* Navigation Links */}

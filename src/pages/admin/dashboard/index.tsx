@@ -1,14 +1,9 @@
-import AdminLayout from "@/components/layouts/AdminLayout";
+import AdminDashboardView from "@/components/views/admin/dashboard";
 
-export default function AdminDashboard() {
+export default function AdminDashboardPage() {
   return (
-    <div className="flex h-screen">
-      <AdminLayout>
-        <div className="flex-1 p-6">
-          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-          <p>Selamat datang di halaman Admin Dashboard!</p>
-        </div>
-      </AdminLayout>
-    </div>
+    <>
+      <AdminDashboardView />
+    </>
   );
 }
