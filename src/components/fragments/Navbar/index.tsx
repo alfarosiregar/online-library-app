@@ -74,7 +74,7 @@ const Navbar = () => {
               <BookOpenText className="h-9 w-9" />
             </Link>
             <Link
-              href="/bookList"
+              href="/books"
               className="text-muted-foreground hover:text-foreground"
             >
               Book

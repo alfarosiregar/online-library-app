@@ -6,17 +6,23 @@ type PropsType = {
 };
 
 export default function AdminLayout({ children }: PropsType) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex h-screen w-full overflow-hidden">
       {/* Sidebar */}
-      <Sidebar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+      <div
+        className={`absolute sm:relative z-50 transition-all duration-300 ${
+          isExpanded ? "w-[250px] " : "w-0 sm:w-[30px]"
+        }`}
+      >
+        <Sidebar isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+      </div>
 
-      {/* Konten utama menyesuaikan sidebar */}
+      {/* Konten utama */}
       <main
-        className={`transition-all duration-300 flex-1 p-6 ${
-          isExpanded ? "ml-[250px]" : "ml-[80px]"
+        className={`transition-all duration-300 flex-1 px-10 py-0 ${
+          isExpanded ? "sm:ml-[10px] m-8" : "sm:ml-[30px] m-5"
         }`}
       >
         {children}
