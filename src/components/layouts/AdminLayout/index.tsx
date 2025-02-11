@@ -21,8 +21,8 @@ export default function AdminLayout({ children }: PropsType) {
 
       {/* Konten utama */}
       <main
-        className={`transition-all duration-300 flex-1 px-10 py-0 ${
-          isExpanded ? "sm:ml-[10px] m-8" : "sm:ml-[30px] m-5"
+        className={`w-full transition-all duration-300 flex-1 px-5 ${
+          isExpanded ? "sm:ml-[10px] m-10" : "sm:ml-[40px] m-5 ml-10"
         }`}
       >
         {children}

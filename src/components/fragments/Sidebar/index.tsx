@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 
 const sidebarLinks = [
-  { name: "Home", href: "/admin", icon: Home },
+  { name: "Home", href: "/", icon: Home },
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutGrid },
   { name: "Buku", href: "/admin/books", icon: SwatchBook },
   { name: "Users", href: "/admin/users", icon: Users },
@@ -55,7 +55,12 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
         )}
       >
         {/* Header Sidebar + Tombol Toggle */}
-        <motion.div className="flex justify-between items-center mb-4">
+        <motion.div
+          className={cn(
+            "flex justify-center items-center mb-4",
+            isExpanded && "justify-between",
+          )}
+        >
           <div className="flex items-center">
             <Image
               src="/logo.png"

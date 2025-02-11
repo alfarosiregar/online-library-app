@@ -23,13 +23,11 @@ export default function DataTable() {
   const [sortedData, setSortedData] = useState(data);
 
   const handleSort = () => {
-    const sorted = [...sortedData].sort((a, b) => {
-      if (sortOrder === "asc") {
-        return a.name.localeCompare(b.name);
-      } else {
-        return b.name.localeCompare(a.name);
-      }
-    });
+    const sorted = [...sortedData].sort((a, b) =>
+      sortOrder === "asc"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name),
+    );
     setSortedData(sorted);
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
@@ -43,43 +41,47 @@ export default function DataTable() {
       <Input
         type="text"
         placeholder="Search by name..."
-        className="mb-4"
+        className="mb-4 w-full"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>
-              Name
-              <Button variant="ghost" size="sm" onClick={handleSort}>
-                <ArrowUpDown className="h-4 w-4 ml-2" />
-              </Button>
-            </TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredData.length > 0 ? (
-            filteredData.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.role}</TableCell>
-              </TableRow>
-            ))
-          ) : (
+
+      {/* Tambahkan wrapper untuk scroll horizontal di layar kecil */}
+      <div className="overflow-x-auto">
+        <Table className="w-full min-w-[500px]">
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={4} className="text-center">
-                No data found
-              </TableCell>
+              <TableHead>ID</TableHead>
+              <TableHead className="flex items-center">
+                Name
+                <Button variant="ghost" size="sm" onClick={handleSort}>
+                  <ArrowUpDown className="h-4 w-4 ml-2" />
+                </Button>
+              </TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Role</TableHead>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {filteredData.length > 0 ? (
+              filteredData.map((item) => (
+                <TableRow key={item.id} className="text-sm md:text-base">
+                  <TableCell>{item.id}</TableCell>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.email}</TableCell>
+                  <TableCell>{item.role}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center">
+                  No data found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

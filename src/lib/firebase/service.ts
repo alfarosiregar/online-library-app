@@ -6,6 +6,7 @@ import {
   getDocs,
   getFirestore,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import app from "./init";
@@ -70,4 +71,20 @@ export async function getDataById(collectionName: string, id: string) {
   const queryProduct = await getDoc(doc(firestore, collectionName, id));
   const data = queryProduct.data();
   return data;
+}
+
+export async function updateDataUser(
+  collectionName: string,
+  id: string,
+  data: any,
+  callback: Function,
+) {
+  const docRef = doc(firestore, collectionName, id);
+  await updateDoc(docRef, data)
+    .then(() => {
+      callback(true);
+    })
+    .catch(() => {
+      callback(false);
+    });
 }
