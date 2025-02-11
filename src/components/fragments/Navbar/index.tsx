@@ -73,6 +73,14 @@ const Navbar = () => {
             >
               <BookOpenText className="h-9 w-9" />
             </Link>
+            {data && data.user.role === "admin" && (
+              <Link
+                href={"/admin"}
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Admin
+              </Link>
+            )}
             <Link
               href="/books"
               className="text-muted-foreground hover:text-foreground"
