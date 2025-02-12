@@ -18,8 +18,8 @@ export default async function handle(
 
   if (req.method === "PUT") {
     const { id, data } = req.body;
-    await updateDataUser("users", id, data, (status: boolean) => {
-      if (status) {
+    await updateDataUser("users", id, data, (result: boolean) => {
+      if (result) {
         res
           .status(200)
           .json({ status: true, statusCode: 200, message: "success" });

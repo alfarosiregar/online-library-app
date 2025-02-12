@@ -145,15 +145,10 @@ const AdminUsersView = ({ users }: PropsType) => {
           onClose={() => setIsModalOpen(false)}
           editUser={editUser}
           setEditUser={setEditUser}
-          onSave={() => {
-            console.log("Save user:", editUser);
-            setIsModalOpen(false);
-          }}
           title="Edit User"
           description="Make changes to your profile here. Click save when you're done."
           labelFullname="Full Name"
           labelEmail="Email"
-          buttonName="Save"
         />
       )}
     </AdminLayout>
