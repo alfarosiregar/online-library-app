@@ -1,4 +1,4 @@
-import { retrieveData, updateDataUser } from "@/lib/firebase/service";
+import { deleteUser, retrieveData, updateUser } from "@/lib/firebase/service";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handle(
@@ -18,7 +18,21 @@ export default async function handle(
 
   if (req.method === "PUT") {
     const { id, data } = req.body;
-    await updateDataUser("users", id, data, (result: boolean) => {
+    await updateUser("users", id, data, (result: boolean) => {
+      if (result) {
+        res
+          .status(200)
+          .json({ status: true, statusCode: 200, message: "success" });
+      } else {
+        res
+          .status(400)
+          .json({ status: false, statusCode: 400, message: "failed" });
+      }
+    });
+  }
+  if (req.method === "DELETE") {
+    const { user }: any = req.query;
+    await deleteUser("users", user[1], (result: boolean) => {
       if (result) {
         res
           .status(200)

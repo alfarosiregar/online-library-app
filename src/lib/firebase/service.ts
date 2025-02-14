@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -73,7 +74,7 @@ export async function getDataById(collectionName: string, id: string) {
   return data;
 }
 
-export async function updateDataUser(
+export async function updateUser(
   collectionName: string,
   id: string,
   data: any,
@@ -81,6 +82,21 @@ export async function updateDataUser(
 ) {
   const docRef = doc(firestore, collectionName, id);
   await updateDoc(docRef, data)
+    .then(() => {
+      callback(true);
+    })
+    .catch(() => {
+      callback(false);
+    });
+}
+
+export async function deleteUser(
+  collectionName: string,
+  id: string,
+  callback: Function,
+) {
+  const docRef = doc(firestore, collectionName, id);
+  await deleteDoc(docRef)
     .then(() => {
       callback(true);
     })

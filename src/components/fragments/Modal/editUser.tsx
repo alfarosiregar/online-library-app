@@ -32,7 +32,7 @@ type ModalProps = {
   labelEmail: string;
 };
 
-const Modal = ({
+const EditUserModal = ({
   isOpen,
   onClose,
   editUser,
@@ -152,4 +152,4 @@ const Modal = ({
   );
 };
 
-export default Modal;
+export default EditUserModal;

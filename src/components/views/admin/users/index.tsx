@@ -11,7 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Search } from "lucide-react";
 import AdminLayout from "@/components/layouts/AdminLayout";
-import Modal from "@/components/fragments/Modal";
+import EditUserModal from "@/components/fragments/Modal/editUser";
+import { Trash2, UserRoundCog } from "lucide-react";
+import DeleteUserModal from "@/components/fragments/Modal/deleteUser";
 
 type User = {
   id: string;
@@ -32,6 +34,7 @@ const AdminUsersView = ({ users }: PropsType) => {
   const [sortedData, setSortedData] = useState<User[]>(users || []);
   const [editUser, setEditUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deletedUser, setDeletedUser] = useState<User | null>(null);
 
   useEffect(() => {
     setSortedData(users || []);
@@ -116,9 +119,14 @@ const AdminUsersView = ({ users }: PropsType) => {
                       <TableCell className="p-3">{user.type}</TableCell>
                       <TableCell className="p-3 flex gap-2">
                         <Button onClick={() => handleEditUser(user.id)}>
-                          Edit
+                          <UserRoundCog />
                         </Button>
-                        <Button variant={"destructive"}>Delete</Button>
+                        <Button
+                          variant={"destructive"}
+                          onClick={() => setDeletedUser(user)}
+                        >
+                          <Trash2 />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))
@@ -140,7 +148,7 @@ const AdminUsersView = ({ users }: PropsType) => {
 
       {/* Modal untuk Edit User */}
       {editUser && (
-        <Modal
+        <EditUserModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           editUser={editUser}
@@ -151,6 +159,12 @@ const AdminUsersView = ({ users }: PropsType) => {
           labelEmail="Email"
         />
       )}
+      <DeleteUserModal
+        isOpen={!!deletedUser}
+        onClose={() => setDeletedUser(null)}
+        deletedUser={deletedUser || null}
+        setDeletedUser={setDeletedUser}
+      />
     </AdminLayout>
   );
 };
