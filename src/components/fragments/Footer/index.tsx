@@ -5,8 +5,8 @@ import Script from "next/script";
 
 export default function Footer() {
   return (
-    <footer className="bg-background border-t">
-      <div className="container mx-auto px-4 py-8">
+    <footer className="bg-background border-t relative z-10 mt-auto">
+      <div className="container mx-auto px-4 py-8 pb-[100px] sm:pb-8">
         <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
           <div className="flex items-center">
             <Image

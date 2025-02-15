@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+    <section className="flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-r from-sky-500 via-sky-400 to-sky-300">
       <div className="container px-4 md:px-6 text-center">
         <div className="flex flex-col items-center space-y-6">
           {/* Animasi Hero Text */}
@@ -47,12 +47,12 @@ const Hero = () => {
             >
               <motion.div whileFocus={{ scale: 1.05 }} className="flex-1">
                 <Input
-                  className="flex-1 bg-white text-black"
+                  className="flex-1 bg-white text-black p-5"
                   placeholder="Search for books..."
                 />
               </motion.div>
               <motion.div whileTap={{ scale: 0.9 }}>
-                <Button type="submit" variant="secondary">
+                <Button type="submit" variant="secondary" className="p-5">
                   <Search className="h-4 w-4 mr-2" />
                   Search
                 </Button>

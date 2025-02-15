@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Development = () => {
   return (
-    <div className="flex items-center justify-center flex-col min-h-screen w-full ml-10">
+    <div className="flex items-center justify-center flex-col min-h-screen w-full">
       <h1 className="text-2xl font-bold">Development Page</h1>
       <Image
         src="/development.png"

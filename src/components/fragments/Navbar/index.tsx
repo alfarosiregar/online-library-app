@@ -1,38 +1,39 @@
-import { motion } from "framer-motion";
-import { Menu, X, Home, BookOpen, User, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
-
-const mobileMenuVariants = {
-  hidden: { x: "-100%" },
-  visible: {
-    x: 0,
-    transition: { type: "spring", stiffness: 120, damping: 15 },
-  },
-  exit: { x: "-100%", transition: { duration: 0.3 } },
-};
+import { motion } from "framer-motion";
+import {
+  Home,
+  BookOpen,
+  User,
+  LogOut,
+  Menu,
+  X,
+  User2,
+  Settings,
+  History,
+  BookOpenCheck,
+  UserRound,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Navbar = () => {
   const { data }: any = useSession();
   const { pathname } = useRouter();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
-      {/* Navbar */}
+      {/* Navbar Desktop */}
       <motion.div
         className={`fixed top-0 left-0 w-full z-50 px-6 py-3 transition-all ${
           isScrolled
@@ -41,21 +42,7 @@ const Navbar = () => {
         }`}
       >
         <div className="flex items-center justify-between">
-          {/* Tombol Menu Mobile */}
-          <Button
-            variant="ghost"
-            className="md:hidden text-white"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <motion.div
-              animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Menu className="w-9 h-9" />
-            </motion.div>
-          </Button>
-
-          {/* Logo di Desktop, Ikon Profil/Login di Mobile */}
+          {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-2 text-white font-bold text-lg"
@@ -69,37 +56,31 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Links untuk Desktop */}
+          {/* Desktop Links */}
           <nav className="hidden md:flex items-center gap-6">
             <Link
               href="/"
-              className={`text-black font-semibold hover:text-gray-700 transition ${
-                pathname === "/" ? "text-red-400" : ""
-              }`}
+              className={`text-black font-semibold hover:text-gray-700 transition ${pathname === "/" ? "text-green-500" : ""}`}
             >
               Home
             </Link>
             <Link
               href="/books"
-              className={`text-black font-semibold hover:text-gray-700 transition ${
-                pathname === "/books" ? "text-red-400" : ""
-              }`}
+              className={`text-black font-semibold hover:text-gray-700 transition ${pathname === "/books" ? "text-green-500" : ""}`}
             >
               Books
             </Link>
             {data && (
               <Link
                 href="/admin"
-                className={`text-black font-semibold hover:text-gray-700 transition ${
-                  pathname === "/admin" ? "text-red-400" : ""
-                }`}
+                className={`text-black font-semibold hover:text-gray-700 transition ${pathname === "/admin" ? "text-gren-500" : ""}`}
               >
                 Admin
               </Link>
             )}
           </nav>
 
-          {/* Tombol Auth */}
+          {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-4">
             {data ? (
               <Button
@@ -107,106 +88,169 @@ const Navbar = () => {
                 variant="destructive"
                 className="border"
               >
-                <LogOut className="mr-2" />
-                Logout
+                <LogOut className="mr-2" /> Logout
               </Button>
             ) : (
               <Button
                 onClick={() => signIn()}
                 className="bg-green-500 hover:bg-green-600"
               >
-                <User className="mr-1" />
-                Login
+                <User className="mr-1" /> Login
               </Button>
             )}
           </div>
+
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" className="md:hidden">
+                <UserRound size={32} className="text-green-900 text-3xl" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64 bg-white">
+              <div className="flex flex-col gap-4 p-4">
+                {data ? (
+                  <div className="flex flex-col items-center">
+                    <Image
+                      src={data.user.image || "/avatar-male.jpg"}
+                      alt="Profile Picture"
+                      width={64}
+                      height={64}
+                      className="rounded-full border shadow"
+                    />
+                    <p className="text-lg font-semibold text-gray-900 mt-2 text-center">
+                      {data.user.name || data.user.fullname}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <Image
+                      src="/login-first.png"
+                      alt="Login First"
+                      width={200}
+                      height={200}
+                    />
+                    <p className="text-sm text-center text-gray-600 font-semibold">
+                      Silahkan login terlebih dahulu
+                    </p>
+                  </>
+                )}
+              </div>
+              <div className="flex flex-col justify-between">
+                <div className="flex flex-col gap-5 p-4">
+                  {data?.user?.role === "admin" && (
+                    <Link
+                      href="/admin"
+                      className={`text-lg flex gap-2 font-semibold ${pathname === "/admin" ? "text-red-400" : "text-gray-900"}`}
+                    >
+                      <User2 />
+                      Admin
+                    </Link>
+                  )}
+                  {data?.user?.role === "member" && (
+                    <Link
+                      href="/profile"
+                      className={`text-lg flex gap-2 font-semibold ${pathname === "/profile" ? "text-red-400" : "text-gray-900"}`}
+                    >
+                      <User2 />
+                      Profile
+                    </Link>
+                  )}
+                  {data?.user && (
+                    <Link
+                      href="/pinjaman"
+                      className={`text-lg flex gap-2 font-semibold ${pathname === "/pinjaman" ? "text-red-400" : "text-gray-900"}`}
+                    >
+                      <BookOpenCheck />
+                      Pinjaman
+                    </Link>
+                  )}
+                  {data?.user && (
+                    <Link
+                      href="/history"
+                      className={`text-lg flex gap-2 font-semibold ${pathname === "/history" ? "text-red-400" : "text-gray-900"}`}
+                    >
+                      <History />
+                      Riwayat
+                    </Link>
+                  )}
+                  {data?.user && (
+                    <Link
+                      href="/pinjaman"
+                      className={`text-lg flex gap-2 font-semibold ${pathname === "/pinjaman" ? "text-red-400" : "text-gray-900"}`}
+                    >
+                      <BookOpenCheck />
+                      Pinjaman
+                    </Link>
+                  )}
+                  {data?.user && (
+                    <Link
+                      href="/settings"
+                      className={`text-lg flex gap-2 font-semibold ${pathname === "/settings" ? "text-red-400" : "text-gray-900"}`}
+                    >
+                      <Settings />
+                      Settings
+                    </Link>
+                  )}
+                </div>
+                <div className="flex flex-col mt-3">
+                  {data ? (
+                    <Button
+                      onClick={() => signOut()}
+                      variant="destructive"
+                      className="mt-4"
+                    >
+                      <LogOut className="mr-2" /> Logout
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => signIn()}
+                      className="mt-4 bg-green-500 hover:bg-green-600"
+                    >
+                      <User className="mr-1" /> Login
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </motion.div>
 
-      {/* Mobile Navigation Menu */}
-      {isMobileMenuOpen && (
-        <>
-          {/* Overlay untuk menutup menu */}
-          <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-
-          {/* Menu Sidebar Mobile dari KIRI */}
-          <motion.div
-            variants={mobileMenuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="fixed left-0 top-0 h-full w-64 bg-gray-900 font-bold text-white p-5 z-50 flex flex-col"
+      {/* Mobile Bottom Navbar */}
+      <div className="fixed bottom-0 left-0 w-full bg-gray-900 text-white flex justify-around items-center py-3 md:hidden z-50 shadow-md">
+        <Link
+          href="/"
+          className={`flex flex-col items-center ${pathname === "/" ? "text-green-400" : "text-white"}`}
+        >
+          <Home className="w-6 h-6" />
+          <span className="text-xs mt-1">Home</span>
+        </Link>
+        <Link
+          href="/books"
+          className={`flex flex-col items-center ${pathname === "/books" ? "text-green-400" : "text-white"}`}
+        >
+          <BookOpen className="w-6 h-6" />
+          <span className="text-xs mt-1">Books</span>
+        </Link>
+        {data ? (
+          <button
+            onClick={() => signOut()}
+            className="flex flex-col items-center text-red-400"
           >
-            <div className="flex justify-between items-center mb-6">
-              <h5 className="text-xl font-semibold">Menu</h5>
-              <Button
-                variant="ghost"
-                className="text-white"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <X className="w-6 h-6" />
-              </Button>
-            </div>
-
-            <nav className="space-y-4">
-              <Link
-                href="/"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition font-semibold ${
-                  pathname === "/" ? "bg-gray-800" : ""
-                }`}
-              >
-                <Home className="w-5 h-5" /> Home
-              </Link>
-              <Link
-                href="/books"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition font-semibold ${
-                  pathname === "/books" ? "bg-gray-800" : ""
-                }`}
-              >
-                <BookOpen className="w-5 h-5" /> Books
-              </Link>
-              {data && (
-                <Link
-                  href="/admin"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition font-semibold ${
-                    pathname === "/admin" ? "bg-gray-800" : ""
-                  }`}
-                >
-                  <User className="w-5 h-5" /> Admin
-                </Link>
-              )}
-            </nav>
-
-            <div className="mt-auto">
-              {data ? (
-                <Button
-                  onClick={() => signOut()}
-                  className="w-full mt-6 bg-red-500 hover:bg-red-600"
-                >
-                  <LogOut className="mr-2" /> Logout
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => signIn()}
-                  className="w-full mt-6 bg-green-500 hover:bg-green-600"
-                >
-                  <User className="mr-1" />
-                  Login
-                </Button>
-              )}
-            </div>
-          </motion.div>
-        </>
-      )}
+            <LogOut className="w-6 h-6" />
+            <span className="text-xs mt-1">Logout</span>
+          </button>
+        ) : (
+          <button
+            onClick={() => signIn()}
+            className="flex flex-col items-center text-white"
+          >
+            <User className="w-6 h-6" />
+            <span className="text-xs mt-1">Login</span>
+          </button>
+        )}
+      </div>
     </>
   );
 };
