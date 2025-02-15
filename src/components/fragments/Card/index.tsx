@@ -21,7 +21,7 @@ type CardProps = {
 
 const BookCard = ({ id, image, name, category, rating = 4.5 }: CardProps) => {
   return (
-    <Card className="w-full max-w-sm overflow-hidden">
+    <Card className="w-full max-w-sm overflow-hidden mx-3 my-10">
       <Link href={`/product/${id}`}>
         <CardHeader className="p-0">
           <div className="aspect-square overflow-hidden">

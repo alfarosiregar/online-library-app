@@ -1,11 +1,14 @@
 import BookCard from "@/components/fragments/Card";
+import Hero from "@/components/fragments/Hero";
 import SkeletonCard from "@/components/fragments/Skeleton";
 import { BookType } from "@/types/book.type";
 
 const BookView = ({ products }: { products: BookType[] }) => {
   return (
-    <main>
+    <main className="flex flex-col min-h-screen">
+      {/* Tambahkan padding-top agar tidak tertutup Navbar */}
       <div className="flex flex-wrap justify-center gap-8 w-full">
+        <Hero />
         {products.length > 0 ? (
           products.map((product) => (
             <BookCard

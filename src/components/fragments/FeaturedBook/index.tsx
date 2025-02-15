@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Router } from "lucide-react";
+import { useRouter } from "next/router";
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -16,6 +18,7 @@ const bookVariants = {
 };
 
 const FeaturedBook = () => {
+  const { push } = useRouter();
   return (
     <section className="flex items-center justify-center w-full py-12 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
@@ -34,7 +37,7 @@ const FeaturedBook = () => {
           animate="visible"
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
         >
-          {[1, 2, 3, 4, 5, 6].map((book) => (
+          {[1, 2, 3, 4].map((book) => (
             <motion.div
               key={book}
               variants={bookVariants}
@@ -59,6 +62,16 @@ const FeaturedBook = () => {
             </motion.div>
           ))}
         </motion.div>
+        <div className="flex justify-center mt-8">
+          <Button
+            className="hover:bg-gray-700 transition-all duration-300"
+            onClick={() => {
+              push("/books");
+            }}
+          >
+            See All Books...
+          </Button>
+        </div>
       </div>
     </section>
   );

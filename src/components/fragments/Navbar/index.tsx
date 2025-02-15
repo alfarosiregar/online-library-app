@@ -1,168 +1,213 @@
-import Link from "next/link";
-import { CircleUser, Menu, BookOpenText, Search } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
+import { Menu, X, Home, BookOpen, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { signIn, signOut, useSession } from "next-auth/react";
+
+const mobileMenuVariants = {
+  hidden: { x: "-100%" },
+  visible: {
+    x: 0,
+    transition: { type: "spring", stiffness: 120, damping: 15 },
+  },
+  exit: { x: "-100%", transition: { duration: 0.3 } },
+};
 
 const Navbar = () => {
   const { data }: any = useSession();
-  console.log(data);
-  const { push } = useRouter();
-  function handleLogout() {
-    push("/login");
-  }
+  const { pathname } = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6">
-      <nav className="hidden flex-col gap-6 text-lg text-black font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        <Link
-          href={"/"}
-          className="flex items-center gap-2 text-lg font-semibold md:text-base"
-        >
-          <BookOpenText className="h-9 w-9" />
-        </Link>
-        {data && data.user.role === "admin" && (
-          <Link
-            href={"/admin"}
-            className="text-muted-foreground transition-colors hover:text-foreground"
+    <>
+      {/* Navbar */}
+      <motion.div
+        className={`fixed top-0 left-0 w-full z-50 px-6 py-3 transition-all ${
+          isScrolled
+            ? "backdrop-blur-lg bg-gray-500/30 shadow-lg"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          {/* Tombol Menu Mobile */}
+          <Button
+            variant="ghost"
+            className="md:hidden text-white"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            Admin
-          </Link>
-        )}
-        {data && data.user.role === "member" && (
-          <Link
-            href={"/student"}
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Student
-          </Link>
-        )}
-        <Link
-          href={"/books"}
-          className="text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Book
-        </Link>
-      </nav>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent
-          side="left"
-          className="border-white/50 bg-white/10 backdrop-blur-lg px-4 md:px-6 mb-8"
-        >
-          <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="#"
-              className="flex items-center gap-2 text-lg font-semibold"
+            <motion.div
+              animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
+              transition={{ duration: 0.3 }}
             >
-              <BookOpenText className="h-9 w-9" />
+              <Menu className="w-9 h-9" />
+            </motion.div>
+          </Button>
+
+          {/* Logo di Desktop, Ikon Profil/Login di Mobile */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-white font-bold text-lg"
+          >
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={50}
+              height={50}
+              className="rounded-md hidden md:block"
+            />
+          </Link>
+
+          {/* Links untuk Desktop */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link
+              href="/"
+              className={`text-black font-semibold hover:text-gray-700 transition ${
+                pathname === "/" ? "text-red-400" : ""
+              }`}
+            >
+              Home
             </Link>
-            {data && data.user.role === "admin" && (
+            <Link
+              href="/books"
+              className={`text-black font-semibold hover:text-gray-700 transition ${
+                pathname === "/books" ? "text-red-400" : ""
+              }`}
+            >
+              Books
+            </Link>
+            {data && (
               <Link
-                href={"/admin"}
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                href="/admin"
+                className={`text-black font-semibold hover:text-gray-700 transition ${
+                  pathname === "/admin" ? "text-red-400" : ""
+                }`}
               >
                 Admin
               </Link>
             )}
-            <Link
-              href="/books"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Book
-            </Link>
           </nav>
-        </SheetContent>
-      </Sheet>
-      <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <form className="ml-auto flex-1 sm:flex-initial">
-          <div className="relative text-black font-bold border-gray-300 rounded-lg">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search book..."
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-            />
-          </div>
-        </form>
-        <p className="cursor-pointer">{data && data.user.username}</p>
-        {data ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                {data.user.image ? (
-                  <Image
-                    src={data.user.image}
-                    alt={data.user.name}
-                    width={32}
-                    height={32}
-                    className="h-9 w-9 rounded-full"
-                  />
-                ) : (
-                  <CircleUser className="h-7 w-7" />
-                )}
 
-                <span className="sr-only">Toggle user menu</span>
+          {/* Tombol Auth */}
+          <div className="hidden md:flex items-center gap-4">
+            {data ? (
+              <Button
+                onClick={() => signOut()}
+                variant="destructive"
+                className="border"
+              >
+                <LogOut className="mr-2" />
+                Logout
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                {data ? (
-                  <Button
-                    onClick={() => signOut()}
-                    className="text-sm bg-slate-500 p-2 text-white rounded-lg hover:bg-slate-600"
-                  >
-                    Logout
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => signIn()}
-                    className="text-sm bg-slate-500 p-2 text-white rounded-lg hover:bg-slate-600"
-                  >
-                    Login
-                  </Button>
-                )}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <div className="flex gap-2">
-            <Button
-              onClick={() => signIn()}
-              className="text-sm bg-slate-500 p-2 text-white rounded-lg hover:bg-slate-600"
-            >
-              Login
-            </Button>
-            <Link href="/auth/register" className="text-sm">
-              <Button className="text-sm bg-sky-500 p-2 text-white rounded-lg hover:bg-sky-600">
-                Register
+            ) : (
+              <Button
+                onClick={() => signIn()}
+                className="bg-green-500 hover:bg-green-600"
+              >
+                <User className="mr-1" />
+                Login
               </Button>
-            </Link>
+            )}
           </div>
-        )}
-      </div>
-    </header>
+        </div>
+      </motion.div>
+
+      {/* Mobile Navigation Menu */}
+      {isMobileMenuOpen && (
+        <>
+          {/* Overlay untuk menutup menu */}
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+
+          {/* Menu Sidebar Mobile dari KIRI */}
+          <motion.div
+            variants={mobileMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed left-0 top-0 h-full w-64 bg-gray-900 font-bold text-white p-5 z-50 flex flex-col"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h5 className="text-xl font-semibold">Menu</h5>
+              <Button
+                variant="ghost"
+                className="text-white"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <X className="w-6 h-6" />
+              </Button>
+            </div>
+
+            <nav className="space-y-4">
+              <Link
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition font-semibold ${
+                  pathname === "/" ? "bg-gray-800" : ""
+                }`}
+              >
+                <Home className="w-5 h-5" /> Home
+              </Link>
+              <Link
+                href="/books"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition font-semibold ${
+                  pathname === "/books" ? "bg-gray-800" : ""
+                }`}
+              >
+                <BookOpen className="w-5 h-5" /> Books
+              </Link>
+              {data && (
+                <Link
+                  href="/admin"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition font-semibold ${
+                    pathname === "/admin" ? "bg-gray-800" : ""
+                  }`}
+                >
+                  <User className="w-5 h-5" /> Admin
+                </Link>
+              )}
+            </nav>
+
+            <div className="mt-auto">
+              {data ? (
+                <Button
+                  onClick={() => signOut()}
+                  className="w-full mt-6 bg-red-500 hover:bg-red-600"
+                >
+                  <LogOut className="mr-2" /> Logout
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => signIn()}
+                  className="w-full mt-6 bg-green-500 hover:bg-green-600"
+                >
+                  <User className="mr-1" />
+                  Login
+                </Button>
+              )}
+            </div>
+          </motion.div>
+        </>
+      )}
+    </>
   );
 };
 
