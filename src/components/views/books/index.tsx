@@ -9,7 +9,7 @@ const BookView = ({ products }: { products: BookType[] }) => {
       {/* Tambahkan padding-top agar tidak tertutup Navbar */}
       <div className="flex flex-wrap justify-center gap-8 w-full">
         <Hero
-          srcImage="/book-lover-without-bg.png"
+          srcImage="/book-lover.png"
           alt="Image in Hero"
           width={300}
           height={300}

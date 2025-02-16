@@ -103,8 +103,8 @@ const Navbar = () => {
           {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" className="md:hidden">
-                <UserRound size={32} className="text-green-900 text-3xl" />
+              <Button variant="outline" className="md:hidden">
+                <Menu size={32} className="text-green-900 text-3xl" />
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-64 bg-white">

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Router } from "lucide-react";
+import { ListTodo, Logs, Router } from "lucide-react";
 import { useRouter } from "next/router";
 
 const containerVariants = {
@@ -69,7 +69,8 @@ const FeaturedBook = () => {
               push("/books");
             }}
           >
-            See All Books...
+            See All Books
+            <Logs />
           </Button>
         </div>
       </div>

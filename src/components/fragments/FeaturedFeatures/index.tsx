@@ -3,9 +3,9 @@ import { BookIcon, CloudIcon, Album } from "lucide-react";
 
 const FeaturedFeatures = () => {
   return (
-    <section className="w-full flex flex-col items-center justify-center py-12 md:py-24 lg:py-32 bg-gray-100">
+    <section className="w-full flex flex-col items-center justify-center py-24 md:py-18 lg:py-48 bg-gray-100">
       <div className="container px-4 md:px-6">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-10">
           Why Choose OnlineLib?
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

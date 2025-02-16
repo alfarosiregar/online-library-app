@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { UserRoundPlus } from "lucide-react";
 import { useRouter } from "next/router";
 
 const HeroSub = () => {
@@ -17,10 +18,11 @@ const HeroSub = () => {
           </p>
           <Button
             size="lg"
-            className="bg-green-600 text-white hover:bg-green-800 transition-all duration-300 mt-6"
+            className="bg-blue-600 text-white hover:bg-blue-800 transition-all duration-300 mt-6"
             onClick={() => router.push("/auth/register")}
           >
-            Sign Up Now
+            <UserRoundPlus />
+            Register
           </Button>
         </div>
       </div>
