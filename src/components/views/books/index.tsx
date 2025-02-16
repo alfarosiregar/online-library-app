@@ -8,7 +8,12 @@ const BookView = ({ products }: { products: BookType[] }) => {
     <main className="flex flex-col min-h-screen">
       {/* Tambahkan padding-top agar tidak tertutup Navbar */}
       <div className="flex flex-wrap justify-center gap-8 w-full">
-        <Hero />
+        <Hero
+          srcImage="/book-lover-without-bg.png"
+          alt="Image in Hero"
+          width={300}
+          height={300}
+        />
         {products.length > 0 ? (
           products.map((product) => (
             <BookCard

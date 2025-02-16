@@ -176,15 +176,6 @@ const Navbar = () => {
                   )}
                   {data?.user && (
                     <Link
-                      href="/pinjaman"
-                      className={`text-lg flex gap-2 font-semibold ${pathname === "/pinjaman" ? "text-red-400" : "text-gray-900"}`}
-                    >
-                      <BookOpenCheck />
-                      Pinjaman
-                    </Link>
-                  )}
-                  {data?.user && (
-                    <Link
                       href="/settings"
                       className={`text-lg flex gap-2 font-semibold ${pathname === "/settings" ? "text-red-400" : "text-gray-900"}`}
                     >

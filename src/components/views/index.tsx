@@ -9,11 +9,16 @@ const MainView = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <main>
-        <Hero />
+        <Hero
+          srcImage="/reading-time.png"
+          alt="Image in Hero"
+          width={300}
+          height={300}
+        />
         <Category />
         <FeaturedFeatures />
         <FeaturedBook />
-        {!data?.user && <HeroSub />}{" "}
+        {!data?.user && <HeroSub />}
       </main>
     </div>
   );
