@@ -61,11 +61,11 @@ export default function LoginView() {
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-8 md:px-8 lg:px-16">
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="w-full min-w-2xl grid grid-cols-1 lg:grid-cols-2 bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Form Section */}
         <Card className="flex flex-col justify-center p-2 md:p-12 w-full max-w-lg">
           <CardHeader className="space-y-2 text-center">
-            <CardTitle className="text-2xl font-bold">Login</CardTitle>
+            <CardTitle className="text-3xl font-bold">Login</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -74,10 +74,11 @@ export default function LoginView() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder="Masukkan email anda"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  className="py-6"
                 />
               </div>
               <div className="space-y-2">
@@ -89,13 +90,14 @@ export default function LoginView() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className="py-6"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="role">Role</Label>
+                <Label htmlFor="role">Login Sebagai</Label>
                 <Select onValueChange={setRole} required>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your role" />
+                  <SelectTrigger className="py-6">
+                    <SelectValue placeholder="Pilih" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="user">User</SelectItem>
@@ -103,13 +105,13 @@ export default function LoginView() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full p-6" disabled={isLoading}>
                 {isLoading ? "Loading..." : "Login"}
               </Button>
             </form>
             <Button
               type="button"
-              className="w-full bg-white hover:bg-gray-100 text-black border border-gray-300"
+              className="w-full bg-white hover:bg-gray-100 text-black border border-gray-300 p-6"
               onClick={() => signIn("google", { callbackUrl, redirect: false })}
             >
               <FontAwesomeIcon icon={faGoogle} className="mr-2" /> Login with
@@ -121,10 +123,10 @@ export default function LoginView() {
               </CardDescription>
             )}
             <CardDescription className="text-center">
-              Don't have an account?{" "}
+              Belum punya akun?{" "}
               <Link
                 href="../auth/register"
-                className="font-semibold text-gray-500"
+                className="font-semibold text-gray-500 hover:text-gray-900"
               >
                 Register
               </Link>
@@ -132,13 +134,13 @@ export default function LoginView() {
           </CardContent>
         </Card>
         {/* Image Section */}
-        <div className="hidden lg:block w-full">
+        <div className="hidden lg:flex w-full items-center justify-center">
           <Image
             src="/login.png"
             alt="Login Illustration"
-            width={1920}
-            height={1080}
-            className="h-full w-full object-cover"
+            width={800}
+            height={600}
+            className="object-cover"
           />
         </div>
       </div>

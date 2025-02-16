@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ListTodo, Logs, Router } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 const containerVariants = {
@@ -30,7 +31,20 @@ const FeaturedBook = () => {
         >
           Featured Books
         </motion.h2>
-
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
+          className="w-full max-w-md flex items-center justify-center mx-auto"
+        >
+          <Image
+            src="/why-choose.png"
+            alt="Image in why-choose"
+            width={200}
+            height={100}
+            className="w-auto h-auto"
+          />
+        </motion.div>
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -69,7 +83,7 @@ const FeaturedBook = () => {
               push("/books");
             }}
           >
-            See All Books
+            Lihat Semua
             <Logs />
           </Button>
         </div>

@@ -15,7 +15,7 @@ const roboto = Roboto({
 });
 
 const AppShell = ({ children }: AppShellProps) => {
-  const disableNavbarAndFooter = ["auth", "admin"];
+  const disableNavbarAndFooter = ["auth", "admin", "404"];
   const { pathname } = useRouter();
   return (
     <main className={roboto.className}>

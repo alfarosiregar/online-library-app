@@ -1,4 +1,5 @@
 import Category from "../fragments/Category";
+import FaQ from "../fragments/FaQ";
 import FeaturedBook from "../fragments/FeaturedBook";
 import FeaturedFeatures from "../fragments/FeaturedFeatures";
 import Hero from "../fragments/Hero";
@@ -18,6 +19,7 @@ const MainView = () => {
         <Category />
         <FeaturedFeatures />
         <FeaturedBook />
+        <FaQ />
         {!data?.user && <HeroSub />}
       </main>
     </div>

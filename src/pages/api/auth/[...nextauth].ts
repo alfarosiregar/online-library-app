@@ -55,6 +55,7 @@ const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.fullname = user.fullname;
         token.phone = user.phone;
+        token.gender = user.gender;
         token.role = user.role;
       }
 
@@ -86,6 +87,9 @@ const authOptions: NextAuthOptions = {
       }
       if ("phone" in token) {
         session.user.phone = token.phone;
+      }
+      if ("gender" in token) {
+        session.user.gender = token.gender;
       }
       if ("role" in token) {
         session.user.role = token.role;

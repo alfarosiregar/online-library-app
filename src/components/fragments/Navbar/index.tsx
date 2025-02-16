@@ -42,47 +42,81 @@ const Navbar = () => {
         }`}
       >
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-white font-bold text-lg"
-          >
-            <Image
-              src="/logo.png"
-              alt="Logo"
-              width={50}
-              height={50}
-              className="rounded-md hidden md:block"
-            />
-          </Link>
-
           {/* Desktop Links */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-6 text-md">
+            {/* Logo */}
             <Link
               href="/"
-              className={`text-black font-semibold hover:text-gray-700 transition ${pathname === "/" ? "text-green-500" : ""}`}
+              className="flex items-center gap-2 text-white font-bold text-lg mr-6"
             >
-              Home
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={60}
+                height={60}
+                className="rounded-md hidden md:block"
+              />
             </Link>
+
             <Link
-              href="/books"
-              className={`text-black font-semibold hover:text-gray-700 transition ${pathname === "/books" ? "text-green-500" : ""}`}
+              href="/"
+              className={`flex gap-2 text-black font-semibold hover:text-gray-700 transition ${pathname === "/" ? "text-gray-500" : ""}`}
             >
-              Books
+              <Home />
+              Beranda
             </Link>
-            {data && (
+
+            <Link
+              href="/buku"
+              className={`flex gap-2 text-black font-semibold hover:text-gray-700 transition ${pathname === "/buku" ? "text-gray-500" : ""}`}
+            >
+              <BookOpen />
+              Buku
+            </Link>
+
+            {data?.user && (
               <Link
-                href="/admin"
-                className={`text-black font-semibold hover:text-gray-700 transition ${pathname === "/admin" ? "text-gren-500" : ""}`}
+                href="/pinjaman"
+                className={`flex gap-2 text-black font-semibold hover:text-gray-700 transition ${pathname === "/pinjaman" ? "text-gray-500" : ""}`}
               >
-                Admin
+                <BookOpenCheck />
+                Pinjaman
+              </Link>
+            )}
+
+            {data?.user && (
+              <Link
+                href="/riwayat"
+                className={`flex gap-2 text-black font-semibold hover:text-gray-700 transition ${pathname === "/riwayat" ? "text-gray-500" : ""}`}
+              >
+                <History />
+                Riwayat
+              </Link>
+            )}
+
+            {data?.user && (
+              <Link
+                href="/settings"
+                className={`flex gap-2 text-black font-semibold hover:text-gray-700 transition ${pathname === "/settings" ? "text-gray-500" : ""}`}
+              >
+                <Settings />
+                Settings
               </Link>
             )}
           </nav>
 
           {/* Auth Buttons */}
-          <div className="hidden md:flex items-center gap-4">
-            {data ? (
+          <div className="hidden md:flex items-center gap-4 flex items-center">
+            {data?.user && (
+              <Link
+                href="/admin"
+                className={`text-black flex gap-2 mr-5 font-semibold hover:text-gray-700 transition ${pathname === "/admin" ? "text-gray-500" : ""}`}
+              >
+                <User />
+                Admin
+              </Link>
+            )}
+            {data?.user ? (
               <Button
                 onClick={() => signOut()}
                 variant="destructive"
@@ -104,7 +138,7 @@ const Navbar = () => {
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" className="md:hidden">
-                <Menu size={32} className="text-green-900 text-3xl" />
+                <Menu size={32} className="text-gray-900 text-3xl" />
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-64 bg-white">
@@ -123,7 +157,7 @@ const Navbar = () => {
                     </p>
                   </div>
                 ) : (
-                  <>
+                  <div>
                     <Image
                       src="/login-first.png"
                       alt="Login First"
@@ -133,15 +167,15 @@ const Navbar = () => {
                     <p className="text-sm text-center text-gray-600 font-semibold">
                       Silahkan login terlebih dahulu
                     </p>
-                  </>
+                  </div>
                 )}
               </div>
-              <div className="flex flex-col justify-between">
-                <div className="flex flex-col gap-5 p-4">
+              <div className="flex flex-col justify-between mt-5">
+                <div className="flex flex-col gap-y-5">
                   {data?.user?.role === "admin" && (
                     <Link
                       href="/admin"
-                      className={`text-lg flex gap-2 font-semibold ${pathname === "/admin" ? "text-red-400" : "text-gray-900"}`}
+                      className={`text-md flex gap-2 font-semibold ${pathname === "/admin" ? "text-gray-500" : ""}`}
                     >
                       <User2 />
                       Admin
@@ -150,7 +184,7 @@ const Navbar = () => {
                   {data?.user?.role === "member" && (
                     <Link
                       href="/profile"
-                      className={`text-lg flex gap-2 font-semibold ${pathname === "/profile" ? "text-red-400" : "text-gray-900"}`}
+                      className={`text-md flex gap-2 font-semibold ${pathname === "/profile" ? "text-gray-500" : ""}`}
                     >
                       <User2 />
                       Profile
@@ -159,7 +193,7 @@ const Navbar = () => {
                   {data?.user && (
                     <Link
                       href="/pinjaman"
-                      className={`text-lg flex gap-2 font-semibold ${pathname === "/pinjaman" ? "text-red-400" : "text-gray-900"}`}
+                      className={`text-md flex gap-2 font-semibold ${pathname === "/pinjaman" ? "text-gray-500" : ""}`}
                     >
                       <BookOpenCheck />
                       Pinjaman
@@ -167,8 +201,8 @@ const Navbar = () => {
                   )}
                   {data?.user && (
                     <Link
-                      href="/history"
-                      className={`text-lg flex gap-2 font-semibold ${pathname === "/history" ? "text-red-400" : "text-gray-900"}`}
+                      href="/riwayat"
+                      className={`text-md flex gap-2 font-semibold ${pathname === "/riwayat" ? "text-gray-500" : ""}`}
                     >
                       <History />
                       Riwayat
@@ -177,7 +211,7 @@ const Navbar = () => {
                   {data?.user && (
                     <Link
                       href="/settings"
-                      className={`text-lg flex gap-2 font-semibold ${pathname === "/settings" ? "text-red-400" : "text-gray-900"}`}
+                      className={`text-md flex gap-2 font-semibold ${pathname === "/settings" ? "text-gray-500" : ""}`}
                     >
                       <Settings />
                       Settings
@@ -218,11 +252,11 @@ const Navbar = () => {
           <span className="text-xs mt-1">Home</span>
         </Link>
         <Link
-          href="/books"
-          className={`flex flex-col items-center ${pathname === "/books" ? "text-green-400" : "text-white"}`}
+          href="/buku"
+          className={`flex flex-col items-center ${pathname === "/buku" ? "text-green-400" : "text-white"}`}
         >
           <BookOpen className="w-6 h-6" />
-          <span className="text-xs mt-1">Books</span>
+          <span className="text-xs mt-1">Buku</span>
         </Link>
         {data ? (
           <button

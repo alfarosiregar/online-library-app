@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { BookIcon, CloudIcon, Album } from "lucide-react";
+import Image from "next/image";
 
 const FeaturedFeatures = () => {
   return (

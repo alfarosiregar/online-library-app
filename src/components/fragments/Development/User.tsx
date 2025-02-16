@@ -3,9 +3,9 @@ import Image from "next/image";
 const Development = () => {
   return (
     <div className="flex items-center justify-center flex-col min-h-screen w-full">
-      <h1 className="text-2xl font-bold">Development Page</h1>
+      <h1 className="text-2xl font-bold">Development User Page</h1>
       <Image
-        src="/development.png"
+        src="/development-user.png"
         alt="development"
         width={500}
         height={500}

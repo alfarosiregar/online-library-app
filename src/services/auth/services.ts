@@ -6,6 +6,7 @@ export async function signUp(
     email: string;
     fullname: string;
     phone: number;
+    gender: string;
     role?: string;
     password: string;
     created_at?: Date;

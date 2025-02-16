@@ -9,7 +9,7 @@ const Category = () => {
     >
       <div className="container px-4 md:px-6 text-center">
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-10">
-          Browse Categories
+          Categories
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
           {[

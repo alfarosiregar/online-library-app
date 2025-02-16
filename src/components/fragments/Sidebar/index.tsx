@@ -123,7 +123,7 @@ const Sidebar = ({ isExpanded, setIsExpanded }: SidebarProps) => {
             >
               <LogOut /> Logout
             </Button>
-            <p>© 2025 Online Library</p>
+            <p className="text-center">© 2025 Online Library</p>
           </div>
         </motion.aside>
       )}
