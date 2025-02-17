@@ -13,8 +13,7 @@ const HeroSub = () => {
             Start Your Reading Journey Today
           </h2>
           <p className="max-w-[100%] text-gray-200 md:text-lg">
-            Join thousands of readers and get unlimited access to our vast
-            library of books.
+            Bergabunglah dengan pembaca lain dan dapatkan akses ke perpustakaan.
           </p>
           <Button
             size="lg"

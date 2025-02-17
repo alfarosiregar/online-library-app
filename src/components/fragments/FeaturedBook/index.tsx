@@ -21,8 +21,8 @@ const bookVariants = {
 const FeaturedBook = () => {
   const { push } = useRouter();
   return (
-    <section className="flex items-center justify-center w-full py-12 md:py-24 lg:py-32">
-      <div className="container px-4 md:px-6">
+    <section className="flex items-center justify-center w-full py-24 md:py-24 lg:py-32">
+      <div className="container px-4 md:px-6 py-10">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ const FeaturedBook = () => {
           <Button
             className="hover:bg-gray-700 transition-all duration-300"
             onClick={() => {
-              push("/books");
+              push("/buku");
             }}
           >
             Lihat Semua

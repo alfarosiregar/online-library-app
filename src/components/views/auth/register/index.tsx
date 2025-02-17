@@ -115,8 +115,8 @@ const RegisterView = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="gender">Jenis Kelamin (Optional)</Label>
-                <Select onValueChange={handleGenderChange}>
+                <Label htmlFor="gender">Jenis Kelamin</Label>
+                <Select onValueChange={handleGenderChange} required>
                   <SelectTrigger className="py-6">
                     <SelectValue placeholder="Pilih jenis kelamin" />
                   </SelectTrigger>

@@ -23,25 +23,19 @@ export default function Footer() {
           </div>
           <nav className="flex space-x-4">
             <Link
-              href="#"
+              href="/"
               className="text-sm hover:underline underline-offset-4"
             >
               Beranda
             </Link>
             <Link
-              href="#"
+              href="/about"
               className="text-sm hover:underline underline-offset-4"
             >
               Tentang Saya
             </Link>
             <Link
-              href="#"
-              className="text-sm hover:underline underline-offset-4"
-            >
-              Layanan
-            </Link>
-            <Link
-              href="#"
+              href="contact"
               className="text-sm hover:underline underline-offset-4"
             >
               Kontak

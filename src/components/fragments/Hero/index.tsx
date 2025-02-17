@@ -33,16 +33,16 @@ const Hero = (props: PropsType) => {
               transition={{ duration: 0.3 }}
               className="text-4xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-white"
             >
-              Discover Your Next Great Read
+              Open the Window to the World with Books
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="mx-auto max-w-[700px] text-gray-200 md:text-xl"
+              className="mx-auto max-w-[700px] text-gray-200 text-lg md:text-xl"
             >
-              Explore thousands of books at your fingertips. Start your reading
-              journey today.
+              Jelajahi beragam koleksi untuk memperluas wawasan dan pengetahuan
+              Anda
             </motion.p>
           </motion.div>
 
@@ -69,13 +69,13 @@ const Hero = (props: PropsType) => {
                 onClick={handleScroll}
               >
                 <CircleChevronDown />
-                Getting Started
+                Browse Library
               </Button>
             </motion.div>
           )}
 
           {/* Animasi Form Search */}
-          {pathname === "/books" && (
+          {pathname === "/buku" && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -90,13 +90,13 @@ const Hero = (props: PropsType) => {
                 <motion.div whileFocus={{ scale: 1.05 }} className="flex-1">
                   <Input
                     className="flex-1 bg-white text-black p-5"
-                    placeholder="Search for books..."
+                    placeholder="Cari koleksi buku..."
                   />
                 </motion.div>
                 <motion.div whileTap={{ scale: 0.9 }}>
                   <Button type="submit" variant="secondary" className="p-5">
                     <Search className="h-4 w-4 mr-2" />
-                    Search
+                    Cari
                   </Button>
                 </motion.div>
               </motion.form>
