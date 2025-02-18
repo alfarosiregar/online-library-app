@@ -107,13 +107,22 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-4 flex items-center">
-            {data?.user && (
+            {data?.user?.role === "admin" && (
               <Link
                 href="/admin"
                 className={`text-black flex gap-2 mr-5 font-semibold hover:text-gray-700 transition ${pathname === "/admin" ? "text-gray-500" : ""}`}
               >
                 <User />
                 Admin
+              </Link>
+            )}
+            {data?.user?.role === "member" && (
+              <Link
+                href="/profile"
+                className={`text-black flex gap-2 mr-5 font-semibold hover:text-gray-700 transition ${pathname === "/admin" ? "text-gray-500" : ""}`}
+              >
+                <User2 />
+                Profile
               </Link>
             )}
             {data?.user ? (

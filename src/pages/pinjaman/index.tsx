@@ -1,9 +1,9 @@
-import Development from "@/components/fragments/Development/User";
+import LoanView from "@/components/views/user/pinjaman";
 
 const LoanPage = () => {
   return (
     <>
-      <Development />
+      <LoanView />
     </>
   );
 };

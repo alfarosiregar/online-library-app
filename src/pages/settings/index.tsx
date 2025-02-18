@@ -1,9 +1,9 @@
-import Development from "@/components/fragments/Development/User";
+import SettingsView from "@/components/views/user/settings";
 
 const SettingsPage = () => {
   return (
     <>
-      <Development />
+      <SettingsView />
     </>
   );
 };

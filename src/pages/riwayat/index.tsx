@@ -1,9 +1,9 @@
-import Development from "@/components/fragments/Development/User";
+import HistoryView from "@/components/views/user/riwayat";
 
 const HistoryPage = () => {
   return (
     <>
-      <Development />
+      <HistoryView />
     </>
   );
 };
