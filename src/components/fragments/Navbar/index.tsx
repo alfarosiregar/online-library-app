@@ -119,7 +119,7 @@ const Navbar = () => {
             {data?.user?.role === "member" && (
               <Link
                 href="/profile"
-                className={`text-black flex gap-2 mr-5 font-semibold hover:text-gray-700 transition ${pathname === "/admin" ? "text-gray-500" : ""}`}
+                className={`text-black flex gap-2 mr-5 font-semibold hover:text-gray-700 transition ${pathname === "/profile" ? "text-gray-500" : ""}`}
               >
                 <User2 />
                 Profile
