@@ -97,10 +97,10 @@ export default function LoginView() {
                 <Label htmlFor="role">Login Sebagai</Label>
                 <Select onValueChange={setRole} required>
                   <SelectTrigger className="py-6">
-                    <SelectValue placeholder="Pilih" />
+                    <SelectValue placeholder="Pilih " />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="user">User</SelectItem>
+                    <SelectItem value="member">Member</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
                   </SelectContent>
                 </Select>
