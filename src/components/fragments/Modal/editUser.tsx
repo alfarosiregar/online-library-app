@@ -20,6 +20,7 @@ import {
 import { useState } from "react";
 import userServices from "@/services/user";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 type ModalProps = {
   isOpen: boolean;
@@ -43,6 +44,12 @@ const EditUserModal = ({
   labelEmail,
 }: ModalProps) => {
   if (!editUser) return null; // Hindari akses properti dari null
+  const { data: session } = useSession(); // Ambil sesi autentikasi
+
+  // Ambil token dengan cara yang sesuai dengan konfigurasi NextAuth
+  const accessToken =
+    (session as any)?.accessToken || (session as any)?.user?.accessToken;
+
   const { reload } = useRouter(); // Inisialisasi router
 
   const allowedRoles: User["role"][] = ["admin", "member"]; // Tambahkan semua role yang valid
@@ -59,7 +66,11 @@ const EditUserModal = ({
         role: editUser.role,
       };
 
-      const result = await userServices.updateUser(editUser.id, formData);
+      const result = await userServices.updateUser(
+        editUser.id,
+        formData,
+        accessToken,
+      );
 
       if (result.status === 200) {
         console.log("User updated successfully");

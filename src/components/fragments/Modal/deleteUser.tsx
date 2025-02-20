@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { User } from "@/types/user.type";
 import userServices from "@/services/user";
+import { useSession } from "next-auth/react";
 
 type DeleteUserModalProps = {
   isOpen: boolean;
@@ -26,13 +27,27 @@ const DeleteUserModal = ({
   setDeletedUser,
 }: DeleteUserModalProps) => {
   if (!deletedUser) return null; // Hindari akses null
+
   const [isLoading, setIsLoading] = useState(false);
   const { reload } = useRouter(); // Untuk reload halaman setelah delete
+  const { data: session } = useSession(); // Ambil sesi autentikasi
+
+  // Ambil token dengan cara yang sesuai dengan konfigurasi NextAuth
+  const accessToken =
+    (session as any)?.accessToken || (session as any)?.user?.accessToken;
 
   const handleDelete = async () => {
+    if (!accessToken) {
+      console.error("No access token found.");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const response = await userServices.deleteUser(deletedUser.id);
+      const response = await userServices.deleteUser(
+        deletedUser.id,
+        accessToken,
+      );
       if (response.status === 200) {
         console.log("User deleted successfully");
         setDeletedUser(null); // Reset user setelah delete
