@@ -1,95 +1,204 @@
-import { deleteUser, retrieveData, updateUser } from "@/lib/firebase/service";
+import {
+  deleteUser,
+  retrieveData,
+  retrieveDataById,
+  updateUser,
+} from "@/lib/firebase/service";
 import type { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
-import { error } from "console";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method === "GET") {
-    const token = req.headers.authorization?.split(" ")[1] || "";
-    if (!token) {
-      res
-        .status(401)
-        .json({ status: false, statusCode: 401, message: "Unauthorized" });
+  const token = req.headers.authorization?.split(" ")[1] || "";
+
+  if (!token) {
+    return res.status(401).json({
+      status: false,
+      statusCode: 401,
+      message: "Unauthorized",
+    });
+  }
+
+  let decoded: any;
+  try {
+    decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET || "");
+    if (!decoded) {
+      return res.status(403).json({
+        status: false,
+        statusCode: 403,
+        message: "Invalid Token",
+      });
     }
-    jwt.verify(
-      token,
-      process.env.NEXTAUTH_SECRET || "",
-      async (error: any, decoded: any) => {
-        if (decoded && decoded.role === "admin") {
-          const users = await retrieveData("users");
-          const data = users.map((user: any) => {
-            delete user.password;
-            return user;
+  } catch (error: any) {
+    console.error("JWT Error:", error.message);
+    return res.status(401).json({
+      status: false,
+      statusCode: 401,
+      message: "Invalid or Expired Token",
+    });
+  }
+
+  if (req.method === "GET") {
+    try {
+      const { user }: any = req.query;
+      const userId = user?.[1];
+
+      if (userId) {
+        // Jika user meminta data dirinya sendiri, izinkan
+        if (decoded.sub === userId || decoded.role === "admin") {
+          const userData = await retrieveDataById("users", userId);
+
+          if (!userData) {
+            return res.status(404).json({
+              status: false,
+              statusCode: 404,
+              message: "User not found",
+            });
+          }
+
+          delete userData.password;
+          return res.status(200).json({
+            status: true,
+            statusCode: 200,
+            message: "Success",
+            data: userData,
           });
-          return res
-            .status(200)
-            .json({ status: true, statusCode: 200, message: "success", data });
         } else {
-          return res
-            .status(403)
-            .json({ status: false, statusCode: 403, message: "Access Denied" });
+          return res.status(403).json({
+            status: false,
+            statusCode: 403,
+            message: "Access Denied",
+          });
         }
-      },
-    );
+      }
+
+      // Jika tidak ada userId dan user bukan admin, larang akses
+      if (decoded.role !== "admin") {
+        return res.status(403).json({
+          status: false,
+          statusCode: 403,
+          message: "Access Denied",
+        });
+      }
+
+      // Jika admin, ambil semua data user
+      const users = await retrieveData("users");
+      const sanitizedUsers = users.map((user: any) => {
+        delete user.password;
+        return user;
+      });
+
+      return res.status(200).json({
+        status: true,
+        statusCode: 200,
+        message: "Success",
+        data: sanitizedUsers,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        statusCode: 500,
+        message: "Internal Server Error",
+      });
+    }
   }
 
   if (req.method === "PUT") {
-    const { data } = req.body;
-    const { user }: any = req.query;
-    const token = req.headers.authorization?.split(" ")[1] || "";
-    jwt.verify(
-      token,
-      process.env.NEXTAUTH_SECRET || "",
-      async (error: any, decoded: any) => {
-        if (decoded && decoded.role === "admin") {
-          await updateUser("users", user[1], data, (result: boolean) => {
-            if (result) {
-              res
-                .status(200)
-                .json({ status: true, statusCode: 200, message: "success" });
-            } else {
-              res
-                .status(400)
-                .json({ status: false, statusCode: 400, message: "failed" });
-            }
-          });
-        } else {
-          res
-            .status(403)
-            .json({ status: false, statusCode: 403, message: "Access Denied" });
-        }
-      },
-    );
+    try {
+      const { data } = req.body;
+      const { user }: any = req.query;
+      const userId = user?.[1];
+
+      if (!userId) {
+        return res.status(400).json({
+          status: false,
+          statusCode: 400,
+          message: "User ID is required",
+        });
+      }
+
+      // Hanya admin atau user itu sendiri yang boleh update data
+      if (decoded.sub !== userId && decoded.role !== "admin") {
+        return res.status(403).json({
+          status: false,
+          statusCode: 403,
+          message: "Access Denied",
+        });
+      }
+
+      const result: any = await updateUser("users", userId, data, () => {});
+      if (result) {
+        return res.status(200).json({
+          status: true,
+          statusCode: 200,
+          message: "User updated successfully",
+        });
+      } else {
+        return res.status(400).json({
+          status: false,
+          statusCode: 400,
+          message: "Failed to update user",
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        statusCode: 500,
+        message: "Internal Server Error",
+      });
+    }
   }
 
   if (req.method === "DELETE") {
-    const { user }: any = req.query;
-    const token = req.headers.authorization?.split(" ")[1] || "";
-    jwt.verify(
-      token,
-      process.env.NEXTAUTH_SECRET || "",
-      async (error: any, decoded: any) => {
-        if (decoded && decoded.role === "admin") {
-          await deleteUser("users", user[1], (result: boolean) => {
-            if (result) {
-              res
-                .status(200)
-                .json({ status: true, statusCode: 200, message: "success" });
-            } else {
-              res
-                .status(400)
-                .json({ status: false, statusCode: 400, message: "failed" });
-            }
-          });
-        } else {
-          res
-            .status(403)
-            .json({ status: false, statusCode: 403, message: "Access Denied" });
-        }
-      },
-    );
+    try {
+      const { user }: any = req.query;
+      const userId = user?.[1];
+
+      if (!userId) {
+        return res.status(400).json({
+          status: false,
+          statusCode: 400,
+          message: "User ID is required",
+        });
+      }
+
+      // Hanya admin yang boleh menghapus user
+      if (decoded.role !== "admin") {
+        return res.status(403).json({
+          status: false,
+          statusCode: 403,
+          message: "Access Denied",
+        });
+      }
+
+      const result: any = await deleteUser("users", userId, () => {});
+      if (result) {
+        return res.status(200).json({
+          status: true,
+          statusCode: 200,
+          message: "User deleted successfully",
+        });
+      } else {
+        return res.status(400).json({
+          status: false,
+          statusCode: 400,
+          message: "Failed to delete user",
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        statusCode: 500,
+        message: "Internal Server Error",
+      });
+    }
   }
+
+  return res.status(405).json({
+    status: false,
+    statusCode: 405,
+    message: "Method Not Allowed",
+  });
 }
