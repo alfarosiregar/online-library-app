@@ -13,6 +13,7 @@ export default async function handle(
 ) {
   const token = req.headers.authorization?.split(" ")[1] || "";
 
+  //Hanya user yang terautentikasi yang dapat mengakses
   if (!token) {
     return res.status(401).json({
       status: false,
@@ -22,6 +23,7 @@ export default async function handle(
   }
 
   let decoded: any;
+
   try {
     decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET || "");
     if (!decoded) {
@@ -46,7 +48,7 @@ export default async function handle(
       const userId = user?.[1];
 
       if (userId) {
-        // Jika user meminta data dirinya sendiri, izinkan
+        // Jika user meminta data dirinya sendiri di izinkan
         if (decoded.sub === userId || decoded.role === "admin") {
           const userData = await retrieveDataById("users", userId);
 
@@ -83,7 +85,7 @@ export default async function handle(
         });
       }
 
-      // Jika admin, ambil semua data user
+      // Jika admin, bisa ambil semua data user
       const users = await retrieveData("users");
       const sanitizedUsers = users.map((user: any) => {
         delete user.password;

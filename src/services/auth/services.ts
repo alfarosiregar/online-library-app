@@ -1,11 +1,12 @@
 import { addData, retrieveDataByField } from "@/lib/firebase/service";
 import bcrypt from "bcrypt";
+import encryptData from "../cryptoJS";
 
 export async function signUp(
   userData: {
     email: string;
     fullname: string;
-    phone: number;
+    phone: string;
     gender: string;
     role?: string;
     password: string;
@@ -26,6 +27,8 @@ export async function signUp(
     userData.type = "credentials";
     userData.created_at = new Date();
     userData.updated_at = new Date();
+    userData.email = encryptData(userData.email);
+    userData.phone = encryptData(userData.phone);
     userData.password = await bcrypt.hash(userData.password, 10);
     addData("users", userData, (status: boolean) => {
       callback(status);
