@@ -1,11 +1,11 @@
-import AboutView from "../../components/views/footer/about";
+// import AboutView from "../../components/views/footer/about";
 
-const AboutPage = () => {
-  return (
-    <>
-      <AboutView />
-    </>
-  );
-};
+// const AboutPage = () => {
+//   return (
+//     <>
+//       <AboutView />
+//     </>
+//   );
+// };
 
-export default AboutPage;
+// export default AboutPage;
