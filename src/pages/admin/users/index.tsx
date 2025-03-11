@@ -1,28 +1,38 @@
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import AdminUsersView from "@/components/views/admin/users";
 import userServices from "@/services/user";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 
 const AdminUsersPage = () => {
   const [users, setUsers] = useState([]);
-  const { data: session } = useSession(); // Ambil sesi autentikasi
+  const { data: session, status }: any = useSession();
 
-  const accessToken =
-    (session as any)?.accessToken || (session as any)?.user?.accessToken;
+  const accessToken = session?.accessToken || session?.user?.accessToken;
 
   useEffect(() => {
     const getAllUsers = async () => {
-      const { data } = await userServices.getAllUsers(accessToken);
-      setUsers(data.data);
-    };
-    getAllUsers();
-  }, []);
+      if (!accessToken) {
+        console.error("Token tidak ditemukan, request dibatalkan");
+        return;
+      }
 
-  return (
-    <>
-      <AdminUsersView users={users} />
-    </>
-  );
+      try {
+        const { data } = await userServices.getAllUsers(accessToken);
+        setUsers(data.data);
+      } catch (error: any) {
+        console.error(
+          "Error mengambil data user:",
+          error.response?.data || error,
+        );
+      }
+    };
+
+    if (status === "authenticated" && accessToken) {
+      getAllUsers();
+    }
+  }, [status, accessToken]); // Tambahkan accessToken ke dependency
+
+  return <AdminUsersView users={users} />;
 };
 
 export default AdminUsersPage;

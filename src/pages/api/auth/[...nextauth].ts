@@ -52,6 +52,7 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account, profile, user }: any) {
       if (account?.provider === "credentials") {
+        token.sub = user.id || user.sub; // Pastikan ID user tersimpan di token
         token.email = user.email;
         token.fullname = user.fullname;
         token.phone = user.phone;
@@ -79,6 +80,9 @@ const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }: any) {
+      if ("sub" in token || "id" in token) {
+        session.user.sub = token.sub;
+      }
       if ("email" in token) {
         session.user.email = token.email;
       }
@@ -98,11 +102,9 @@ const authOptions: NextAuthOptions = {
         session.user.type = token.type;
       }
 
-      const accessToken = jwt.sign(token, process.env.NEXTAUTH_SECRET || "", {
+      session.accessToken = jwt.sign(token, process.env.NEXTAUTH_SECRET || "", {
         algorithm: "HS256",
       });
-
-      session.accessToken = accessToken;
 
       return session;
     },

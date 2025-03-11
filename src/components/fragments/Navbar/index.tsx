@@ -10,18 +10,17 @@ import {
   User,
   LogOut,
   Menu,
-  X,
   User2,
   Settings,
   History,
   BookOpenCheck,
-  UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Navbar = () => {
   const { data }: any = useSession();
+  console.log(data);
   const { pathname } = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -122,7 +121,7 @@ const Navbar = () => {
                 className={`text-black flex gap-2 mr-5 font-semibold hover:text-gray-700 transition ${pathname === "/profile" ? "text-gray-500" : ""}`}
               >
                 <User2 />
-                Profile
+                {data.user.fullname}
               </Link>
             )}
             {data?.user ? (
@@ -155,7 +154,7 @@ const Navbar = () => {
                 {data ? (
                   <div className="flex flex-col items-center">
                     <Image
-                      src={data.user.image || "/avatar-male.jpg"}
+                      src={data.user.avatarUrl || "/avatar-male.jpg"}
                       alt="Profile Picture"
                       width={64}
                       height={64}

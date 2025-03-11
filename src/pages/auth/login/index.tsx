@@ -1,10 +1,13 @@
 import LoginView from "@/components/views/auth/login";
+import { ReCaptchaProvider } from "next-recaptcha-v3";
 
 const LoginPage = () => {
   return (
-    <div>
+    <ReCaptchaProvider
+      reCaptchaKey={process.env.NEXT_PUBLIC_SITE_KEY_RECAPTCHA}
+    >
       <LoginView />
-    </div>
+    </ReCaptchaProvider>
   );
 };
 

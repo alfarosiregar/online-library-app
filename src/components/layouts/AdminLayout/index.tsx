@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: PropsType) {
   }, []);
 
   return (
-    <div className="flex flex-col sm:flex-row h-screen w-full overflow-hidden">
+    <div className="flex flex-col sm:flex-row min-h-screen w-full overflow-hidden">
       {/* Sidebar untuk desktop, Bottom navigation untuk mobile */}
       {!isMobile ? (
         <div
@@ -36,9 +36,7 @@ export default function AdminLayout({ children }: PropsType) {
       )}
 
       {/* Konten utama */}
-      <main className="w-full flex-1 px-5 pt-5 sm:ml-0 sm:pt-10">
-        {children}
-      </main>
+      <main className="w-full px-5 pt-5 sm:ml-20 sm:pt-10">{children}</main>
     </div>
   );
 }

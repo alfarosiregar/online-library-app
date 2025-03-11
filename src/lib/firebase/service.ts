@@ -78,16 +78,15 @@ export async function updateUser(
   collectionName: string,
   id: string,
   data: any,
-  callback: Function,
 ) {
-  const docRef = doc(firestore, collectionName, id);
-  await updateDoc(docRef, data)
-    .then(() => {
-      callback(true);
-    })
-    .catch(() => {
-      callback(false);
-    });
+  try {
+    const docRef = doc(firestore, collectionName, id);
+    await updateDoc(docRef, data);
+    return true; // Tambahkan return
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return false; // Pastikan error dikembalikan
+  }
 }
 
 export async function deleteUser(
@@ -95,12 +94,12 @@ export async function deleteUser(
   id: string,
   callback: Function,
 ) {
-  const docRef = doc(firestore, collectionName, id);
-  await deleteDoc(docRef)
-    .then(() => {
-      callback(true);
-    })
-    .catch(() => {
-      callback(false);
-    });
+  try {
+    const docRef = doc(firestore, collectionName, id);
+    await deleteDoc(docRef);
+    return true; // Tambahkan return
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return false; // Pastikan error dikembalikan
+  }
 }

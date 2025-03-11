@@ -105,7 +105,7 @@ export default function ContactView() {
             </div>
             <div className="flex items-center space-x-3 text-gray-600">
               <Phone className="w-5 h-5" />
-              <span>+62 822-15-81-0187</span>
+              <span>+62 822-1581-0187</span>
             </div>
             <div className="flex items-center space-x-3 text-gray-600">
               <MapPin className="w-5 h-5" />

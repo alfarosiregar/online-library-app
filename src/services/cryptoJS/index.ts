@@ -6,4 +6,8 @@ function encryptData(data: any) {
   return CryptoJS.AES.encrypt(data, SECRET_KEY).toString();
 }
 
-export default encryptData;
+const hashData = (data: any) => {
+  return CryptoJS.SHA256(data).toString();
+};
+
+export { encryptData, hashData };

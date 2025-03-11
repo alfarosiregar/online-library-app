@@ -51,7 +51,6 @@ export default async function handle(
         // Jika user meminta data dirinya sendiri di izinkan
         if (decoded.sub === userId || decoded.role === "admin") {
           const userData = await retrieveDataById("users", userId);
-
           if (!userData) {
             return res.status(404).json({
               status: false,
@@ -59,7 +58,6 @@ export default async function handle(
               message: "User not found",
             });
           }
-
           delete userData.password;
           return res.status(200).json({
             status: true,
@@ -106,12 +104,11 @@ export default async function handle(
       });
     }
   }
-
   if (req.method === "PUT") {
     try {
       const { data } = req.body;
       const { user }: any = req.query;
-      const userId = user?.[1];
+      const userId = Array.isArray(user) ? user[1] : user;
 
       if (!userId) {
         return res.status(400).json({
@@ -121,7 +118,6 @@ export default async function handle(
         });
       }
 
-      // Hanya admin atau user itu sendiri yang boleh update data
       if (decoded.sub !== userId && decoded.role !== "admin") {
         return res.status(403).json({
           status: false,
@@ -130,7 +126,8 @@ export default async function handle(
         });
       }
 
-      const result: any = await updateUser("users", userId, data, () => {});
+      const result = await updateUser("users", userId, data); // Sekarang `updateUser` mengembalikan nilai
+
       if (result) {
         return res.status(200).json({
           status: true,
@@ -145,6 +142,7 @@ export default async function handle(
         });
       }
     } catch (error) {
+      console.error("PUT API Error:", error);
       return res.status(500).json({
         status: false,
         statusCode: 500,

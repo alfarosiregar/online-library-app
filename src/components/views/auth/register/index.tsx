@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,10 +20,10 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import authService from "@/services/auth";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 
 const RegisterView = () => {
   const { push } = useRouter();
@@ -36,6 +36,8 @@ const RegisterView = () => {
     gender: "",
     password: "",
   });
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [message, setMessage] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -61,6 +63,16 @@ const RegisterView = () => {
       }
     } catch (err: any) {
       setError("Email sudah terdaftar");
+    }
+
+    const token = recaptchaRef.current?.getValue();
+    if (!token) return setMessage("reCAPTCHA diperlukan");
+
+    const response = await axios.post("/api/verify-recaptcha", { token });
+    if (response.data.success) {
+      setMessage("Verifikasi berhasil!");
+    } else {
+      setMessage("Verifikasi gagal!");
     }
 
     setIsLoading(false);
@@ -139,6 +151,10 @@ const RegisterView = () => {
                   required
                 />
               </div>
+              <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_SITE_KEY_RECAPTCHA_V2 || ""}
+                ref={recaptchaRef}
+              />
             </CardContent>
             <CardFooter className="flex flex-col space-y-3">
               <Button

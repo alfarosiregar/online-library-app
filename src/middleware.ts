@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export function mainMiddleware() {
   const res = NextResponse.next();
-  console.log(res);
   res.headers.set(
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains; preload",
@@ -12,4 +11,10 @@ export function mainMiddleware() {
   return res;
 }
 
-export default withAuth(mainMiddleware, ["admin", "auth"]);
+export default withAuth(mainMiddleware, [
+  "admin",
+  "auth",
+  "profile",
+  "riwayat",
+  "settings",
+]);

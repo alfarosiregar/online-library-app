@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -22,6 +22,9 @@ import { signIn } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import Image from "next/image";
+import { Eye, EyeOff } from "lucide-react";
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 
 export default function LoginView() {
   const { push, query } = useRouter();
@@ -30,6 +33,9 @@ export default function LoginView() {
   const [role, setRole] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const callbackUrl =
     typeof query.callbackUrl === "string" ? query.callbackUrl : "/";
@@ -56,6 +62,17 @@ export default function LoginView() {
     } catch (_err) {
       setError("Email or password is incorrect");
     }
+
+    const token = recaptchaRef.current?.getValue();
+    if (!token) return setMessage("reCAPTCHA diperlukan");
+
+    const response = await axios.post("/api/verify-recaptcha", { token });
+    if (response.data.success) {
+      setMessage("Verifikasi berhasil!");
+    } else {
+      setMessage("Verifikasi gagal!");
+    }
+
     setIsLoading(false);
   };
 
@@ -78,25 +95,39 @@ export default function LoginView() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="py-6"
+                  className="py-6 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="********"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="py-6"
-                />
+              <div className="relative space-y-1">
+                <Label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Password
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Masukkan password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full py-6 pr-10 text-gray-700 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="role">Login Sebagai</Label>
                 <Select onValueChange={setRole} required>
-                  <SelectTrigger className="py-6">
+                  <SelectTrigger className="py-6 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <SelectValue placeholder="Pilih " />
                   </SelectTrigger>
                   <SelectContent>
@@ -105,6 +136,10 @@ export default function LoginView() {
                   </SelectContent>
                 </Select>
               </div>
+              <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_SITE_KEY_RECAPTCHA_V2 || ""}
+                ref={recaptchaRef}
+              />
               <Button type="submit" className="w-full p-6" disabled={isLoading}>
                 {isLoading ? "Loading..." : "Login"}
               </Button>
