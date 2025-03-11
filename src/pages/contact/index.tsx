@@ -1,4 +1,4 @@
-import ContactView from "@/components/views/footer/contact";
+import ContactView from "../../components/views/footer/contact";
 
 const ContactPage = () => {
   return (

@@ -20,7 +20,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Navbar = () => {
   const { data }: any = useSession();
-  console.log(data);
   const { pathname } = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
 

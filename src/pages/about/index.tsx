@@ -1,4 +1,4 @@
-import AboutView from "@/components/views/footer/about";
+import AboutView from "../../components/views/footer/about";
 
 const AboutPage = () => {
   return (
