@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Github, Instagram, Linkedin, Mail, Twitter } from "lucide-react";
+import { Github, Instagram, Linkedin, Mail } from "lucide-react";
 
 export default function AboutView() {
   return (
